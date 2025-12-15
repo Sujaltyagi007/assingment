@@ -1,9 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@/lib/generated/prisma/client.js";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
 async function fetchUserFromDB(email, password) {
   const user = await prisma.user.findUnique({ where: { email } });
   console.log(user);
@@ -13,7 +12,8 @@ async function fetchUserFromDB(email, password) {
   if (!isValid) return null;
   return {
     id: user.id,
-    name: user.name,
+    username: user.username,
+    role: user.role,
     email: user.email,
   };
 }
@@ -45,16 +45,18 @@ const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.name = user.name;
+        token.username = user.username;
         token.email = user.email;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
-        session.user.name = token.name;
+        session.user.username = token.username;
         session.user.email = token.email;
+        session.user.role = token.role;
       }
       return session;
     },

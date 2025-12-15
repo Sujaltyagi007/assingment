@@ -11,8 +11,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Google from "@/assets/google.svg";
-import Github from "@/assets/github.svg";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
@@ -57,15 +55,15 @@ export function LoginForm({ className, ...props }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="grid gap-4">
               <div className="grid grid-cols-2 gap-1">
                 <Button variant="outline" className="w-full">
-                  <Image src={Google} alt="Google" width={20} height={20} />
+                  <Image src={"/assets/google.svg"} alt="Google" width={20} height={20} />
                   Google
                 </Button>
                 <Button variant="outline" className="w-full">
-                  <Image src={Github} alt="Github" width={20} height={20} />
+                  <Image src={"/assets/github.svg"} alt="Github" width={20} height={20} />
                   Github
                 </Button>
               </div>

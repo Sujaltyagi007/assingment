@@ -1,10 +1,10 @@
-import { PrismaClient } from "@/lib/generated/prisma/client.js";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 
 export async function POST(req) {
   const { email, password, username } = await req.json();
-  const prisma = new PrismaClient();
+  console.log(email, password, username);
   try {
     const user = await prisma.user.findUnique({ where: { email } });
     if (user) {
@@ -14,6 +14,7 @@ export async function POST(req) {
       );
     }
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword);
     await prisma.user.create({
       data: {
         email,
